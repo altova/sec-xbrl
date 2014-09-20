@@ -23,6 +23,8 @@ These are the supporting Python files for the XBRL.US Webinar that is availble
 on YouTube: https://www.youtube.com/watch?v=2Oe9ZqXVGME as well as the slides
 available here on SlideShare: http://www.slideshare.net/afalk42/xbrl-us-altova-webinar
 
+See also my recent blog post: http://www.xmlaficionado.com/2014/09/how-to-download-and-process-sec-xbrl.html
+
 Please watch the YouTube video and review the slides to see how these Python
 scripts are intended to be used. Also note that these scripts were written with
 Python 3.3.3 so they may require modifications if you use them with a different
