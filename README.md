@@ -7,7 +7,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+  http://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,7 +17,7 @@ limitations under the License.
 
 -------------------------------------------------------------------------
 
-XBRL.US Webinar: How to download and process SEC XBRL Data Directly from EDGAR
+<h2>XBRL.US Webinar: How to download and process SEC XBRL Data Directly from EDGAR</h2>
 
 These are the supporting Python files for the XBRL.US Webinar that is availble
 on YouTube: https://www.youtube.com/watch?v=2Oe9ZqXVGME as well as the slides
@@ -39,12 +39,14 @@ executable in the Python script, though.
 
 For more information on RaptorXML, please see here: http://www.altova.com/raptorxml.html
 
-USAGE INFORMATION:
+-------------------------------------------------------------------------
+
+<h3>Usage Information</h3>
 
 
-(1) LOADSECFILINGS
+<h4>loadSECfilings</h4>
 
-loadSECfilings.py -y <year> -m <month> | -f <from_year> -t <to_year>
+    loadSECfilings.py -y <year> -m <month> | -f <from_year> -t <to_year>
 
 These creates a subdirectory sec/ and then subsequent year-based directories and months
 underneath and downloads all SES XBRL filings from the EDGAR system to your local hard
@@ -54,13 +56,13 @@ ZIP file per filing submitted to the SEC on your drive. If you call this script
 again for the current or any previous month at a later day, it will only download
 any files that are new and have not yet been downloaded before.
 
-EXAMPLES:
+<h5>Examples</h5>
 
-python3 loadSECfilings.py -y 2014 -m 9
+    python3 loadSECfilings.py -y 2014 -m 9
 
 This will load all SEC filing for September 2014.
 
-python3 loadSECfilings.py -f 2005 -t 2014
+    python3 loadSECfilings.py -f 2005 -t 2014
 
 This will load all SEC filing for the start of the XBRL pilot program in 2005 until 2014.
 WARNING: If you download all years available (2005-2014) this will be about 127,000 files
@@ -68,9 +70,9 @@ and take about 18GB of data on your hard disk, so please use with caution, espec
 when you are on a slow Internet connection.
 
 
-(2) VALSECFILINGS
+<h4>valSECfilings</h4>
 
-valSECfilings ( -y <year> | -f <from_year> -t <to_year> ) -m <month> 
+    valSECfilings ( -y <year> | -f <from_year> -t <to_year> ) -m <month> 
               -c <cik> -k <ticker> -s <script>
 
 This will call RaptorXML+XBRL Server to validate the SEC filings for a specified year
@@ -84,21 +86,21 @@ the XBRL files. As an example, there is a Python script extractRatios.py in this
 that demonstrates how to extract common financial ratios (quick ratio, cash ratio) from
 the XBRL filings.
 
-EXAMPLES:
+<h5>Examples</h5>
 
-python3 valSECfilings.py -y 2014 -m 9
+    python3 valSECfilings.py -y 2014 -m 9
 
 This will validate all downloaded SEC filings for the month of September 2014. If a large
 number of files is passed to the Python script, it will create batches of about 20 jobs
 each and pass those to RaptorXML+XBRL Server in sequential batches.
 
-python3 valSECfilings.py -f 2013 -t 2014 -k AAPL,MSFT,ORCL
+    python3 valSECfilings.py -f 2013 -t 2014 -k AAPL,MSFT,ORCL
 
 This will validate all SEC filings submitted by Apple, Microsoft, and Oracle for the
 years 2013 and 2014. Positive validation messages as well as any errors or warnings
 are output to the console window.
 
-python3 valSECfilings.py -f 2013 -t 2014 -k ORCL -s extractRatios.py
+    python3 valSECfilings.py -f 2013 -t 2014 -k ORCL -s extractRatios.py
 
 This will validate all Oracle XBRL filings for the years 2013-2014 and then perform
 post-validation analysis of the filings using the supplied Python script extractRatios.py
@@ -108,8 +110,9 @@ various balance sheet facts to calculate current ratio, quick ratio, and cash ra
 and example of how to do post-validation XBRL processing. Furthermore, it appends those
 ratios to an output file ratios.csv in the same directory.
 
+-------------------------------------------------------------------------
 
-REMINDER: 
+<h3>Reminder</h3>
 
 To see these scripts and a lot more in-depth explanation, please watch the
 YouTube video of the webinar here: https://www.youtube.com/watch?v=2Oe9ZqXVGME
