@@ -37,7 +37,11 @@ request a 30-day free evaluation license key.
 These sample Python scripts available here on GitHub were tested with a the MacOS
 version of RaptorXML+XBRL Server, but should function with the Windows or Linux version
 as well. You may need to change the file-paths pointing to the RaptorXML+XBRL Server
-executable in the Python script, though.
+executable in the Python script, though, or add them to the global PATH environment
+variable on your system.
+
+In addition to the standard Python libraries, you also need to install the Python
+feedparser module/library available here: https://pypi.python.org/pypi/feedparser
 
 For more information on RaptorXML, please see here: http://www.altova.com/raptorxml.html
 
