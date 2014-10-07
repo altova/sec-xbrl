@@ -4,7 +4,7 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 # 
-#     http://www.apache.org/licenses/LICENSE-2.0
+#	  http://www.apache.org/licenses/LICENSE-2.0
 # 
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -12,30 +12,60 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os, re
+import os, re, sys
 from altova import xml, xsd, xbrl
-import os
-import fcntl
 
 sec_ns =  '/dei/'		# was: 'http://xbrl.sec.gov/dei/'
 fasb_ns = '/us-gaap/'	# was: 'http://fasb.org/us-gaap/'
 
-class Lock:
+# We need to implement a simple locking class that allows us to avoid having 
+# on_xbrl_valid called from multiple threads in RaptorXML at the same time.
 
-    def __init__(self, filename):
-        self.filename = filename
-        # This will create it if it does not exist already
-        self.handle = open(filename, 'w')
+if sys.platform == 'win32':
+	import msvcrt
 
-    # Bitwise OR fcntl.LOCK_NB if you need a non-blocking lock
-    def acquire(self):
-        fcntl.flock(self.handle, fcntl.LOCK_EX)
+	# fcntl is not available under Windows, so we'll use a 
+	# file locking function from the msvcrt library instead...
 
-    def release(self):
-        fcntl.flock(self.handle, fcntl.LOCK_UN)
+	class Lock:
 
-    def __del__(self):
-        self.handle.close()
+		def __init__(self, filename):
+			self.filename = filename
+			# This will create it if it does not exist already
+			self.handle = open(filename, 'w')
+
+		# Bitwise OR fcntl.LOCK_NB if you need a non-blocking lock
+		def acquire(self):
+			msvcrt.locking(self.handle.fileno(), msvcrt.LK_LOCK, 1)
+
+		def release(self):
+			msvcrt.locking(self.handle.fileno(), msvcrt.LK_UNLCK, 1)
+
+		def __del__(self):
+			self.handle.close()
+
+else:
+	import fcntl
+
+	# Under Linux and MacOS we can use the fcntl library to implement
+	# the simple file locking mechanism...
+
+	class Lock:
+
+		def __init__(self, filename):
+			self.filename = filename
+			# This will create it if it does not exist already
+			self.handle = open(filename, 'w')
+
+		# Bitwise OR fcntl.LOCK_NB if you need a non-blocking lock
+		def acquire(self):
+			fcntl.flock(self.handle, fcntl.LOCK_EX)
+
+		def release(self):
+			fcntl.flock(self.handle, fcntl.LOCK_UN)
+
+		def __del__(self):
+			self.handle.close()
 
 def camelToSpaces( label ):
 	# Utility for pretty-printing the labels
@@ -75,7 +105,11 @@ def printFacts( facts, indent=1, targetDate=None ):
 def on_xbrl_valid( job, instance ):
 
 	try:
-		lock = Lock("/tmp/extract_ratios_lock.tmp")
+		# a portable solution to get the tmp dir
+		import tempfile
+		tmp = tempfile.gettempdir()
+		tmplk = os.path.join( tmp, "extract_ratios_lock.tmp" )
+		lock = Lock(tmplk)
 		lock.acquire()
 
 		# Create output CSV file if it doesn't exist yet
