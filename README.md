@@ -49,6 +49,7 @@ For more information on RaptorXML, please see here: http://www.altova.com/raptor
 
 <h3>Usage Information</h3>
 
+These scripts now require RaptorXML+XBRL v2015r3 or newer.
 
 <h4>loadSECfilings</h4>
 
